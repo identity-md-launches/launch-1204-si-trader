@@ -80,11 +80,16 @@ contract SITRToken {
     function swarmDistributor() public view returns (address) {
         if (_distributor != address(0)) return _distributor;
         // A missing registration is normal while the factory is constructing the launch.
-        try ILaunchDistributorRegistry(factory).distributorOf(launchNumber) returns (address distributor) {
-            return distributor;
-        } catch {
-            return address(0);
-        }
+        // Validate the return data explicitly: a high-level try/catch does not catch
+        // decoding failures from a successful call that returns malformed data.
+        (bool success, bytes memory result) =
+            factory.staticcall(abi.encodeCall(ILaunchDistributorRegistry.distributorOf, (launchNumber)));
+        if (!success || result.length < 32) return address(0);
+        uint256 encoded = abi.decode(result, (uint256));
+        if (encoded > type(uint160).max) return address(0);
+        // The range check above ensures the cast cannot truncate the registry value.
+        // forge-lint: disable-next-line(unsafe-typecast)
+        return address(uint160(encoded));
     }
 
     function isExcludedFromDividends(address account) public view returns (bool) {

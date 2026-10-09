@@ -9,6 +9,8 @@ interface Vm {
     function stopPrank() external;
     function expectRevert(bytes4 selector) external;
     function etch(address target, bytes calldata code) external;
+    function mockCall(address callee, bytes calldata data, bytes calldata returnData) external;
+    function clearMockedCalls() external;
 }
 
 /// @dev Test-only launch factory. Production resolves the real factory's registry.
@@ -300,6 +302,54 @@ contract SITRTokenTest {
         late.transfer(ALICE, 100 ether);
         _eq(late.claimableDividends(DISTRIBUTOR), 0);
         _eq(late.claimableDividends(ALICE), 0);
+    }
+
+    function test_MalformedRegistryAllowsUntaxedTransfersButRejectsBuys() public {
+        factory.register(LAUNCH, address(0));
+        factory.move(token, ALICE, 100 ether);
+        factory.move(token, MANAGER, 100 ether);
+        bytes memory query = abi.encodeWithSignature("distributorOf(uint64)", LAUNCH);
+        // A successful call may still return no data, a truncated word, or an invalid address.
+        bytes[3] memory responses = [bytes(""), hex"01", abi.encode(uint256(1) << 160)];
+        for (uint256 i; i < responses.length; ++i) {
+            vm.mockCall(address(factory), query, responses[i]);
+            require(token.swarmDistributor() == address(0), "malformed registry accepted");
+            vm.prank(ALICE);
+            token.transfer(BOB, 1 ether);
+            vm.prank(BOB);
+            token.transfer(MANAGER, 1 ether);
+            _eq(token.balanceOf(BOB), 0);
+            _eq(token.balanceOf(MANAGER), (101 + i) * 1 ether);
+            _eq(token.claimableDividends(ALICE), 0);
+            _eq(token.claimFor(ALICE), 0);
+            vm.prank(MANAGER);
+            vm.expectRevert(SITRToken.DistributorUnavailable.selector);
+            token.transfer(CAROL, 100 ether);
+            _eq(token.balanceOf(CAROL), 0);
+            _eq(token.balanceOf(address(token)), 0);
+            _eq(token.totalFeesCollected(), 0);
+        }
+        vm.clearMockedCalls();
+        factory.register(LAUNCH, DISTRIBUTOR);
+        _buy(CAROL, 100 ether);
+        require(token.swarmDistributor() == DISTRIBUTOR, "valid registration not resolved");
+        _eq(token.balanceOf(CAROL), 97 ether);
+        _eq(token.totalFeesCollected(), 3 ether);
+    }
+
+    function test_InvalidDistributorRevertsWithoutPinningOrMovingSupply() public {
+        address[4] memory invalid = [address(factory), MANAGER, address(token), BURN];
+        for (uint256 i; i < invalid.length; ++i) {
+            factory.register(LAUNCH, invalid[i]);
+            vm.expectRevert(SITRToken.InvalidDistributor.selector);
+            factory.move(token, ALICE, 1 ether);
+            _eq(token.balanceOf(address(factory)), SUPPLY);
+            _eq(token.balanceOf(ALICE), 0);
+        }
+        factory.register(LAUNCH, DISTRIBUTOR);
+        factory.move(token, ALICE, 1 ether);
+        _eq(token.balanceOf(ALICE), 1 ether);
+        require(token.swarmDistributor() == DISTRIBUTOR, "invalid registration was pinned");
     }
 
     function test_SeedBuyAndSellSettleExactManagerDeltas() public {
