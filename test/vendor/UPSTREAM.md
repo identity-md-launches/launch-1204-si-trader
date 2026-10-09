@@ -1,0 +1,79 @@
+# Test-only dependencies
+
+These ordinary source files make `forge build` and `forge test` work offline, without remappings or submodules. No installation step is needed.
+
+- Uniswap v4-core v4.0.0: https://github.com/Uniswap/v4-core/tree/e50237c43811bd9b526eff40f26772152a42daba
+- Its pinned Solmate Owned dependency: https://github.com/transmissions11/solmate/tree/4b47a19038b798b4a33d9749d25e570443520647
+- forge-std v1.9.7: https://github.com/foundry-rs/forge-std/tree/77041d2ce690e692d6e03cc812b57d1ddaa4d505
+
+Only the transitive imports used by these tests and the upstream licenses are included. The only source change is the Solmate import in `v4-core/src/ProtocolFees.sol`, rewritten to `../../solmate/src/auth/Owned.sol`. Root project configuration is unchanged. Dependencies are test infrastructure, not deployed application contracts.
+
+Original-source SHA-256 digests (before any formatter runs):
+
+```text
+29297a56d2b1692d4439545b93ed62890da7e9e1060c03005b43151af7984bf0  forge-std/Base.sol
+d4c89eec70d267dec6188461fbc74d3dc8c47e518d176a23417533a232ed9780  forge-std/StdAssertions.sol
+09a88ace5bc037f4a805c7ae071abf675ce802c8b36810287cd327b7d035fb81  forge-std/StdChains.sol
+29af42f9d670fd22e9fc3ebe3c2da194471e93e210361c41d3d26ef04e9dca28  forge-std/StdCheats.sol
+6c785abd2fb9d42560f867d8e43e729c55f5bda2c06e5ddae27b17e301de4f04  forge-std/StdConstants.sol
+82ca17e33a03775e95b4612bd604a8732c73b2982a0278d214e06c68a886dc11  forge-std/StdError.sol
+f572e991cfe874844b3b75a540e38e2161c29b5d9ab1635a3c4f1a16c548f987  forge-std/StdInvariant.sol
+0211b47e93dbeb6a7de6112470a77137038ed73b79b015847f013e49fcd7511f  forge-std/StdJson.sol
+f04fc0616741563eb32d66c11af7fdca55a7202221e14282268c7be851fc63ab  forge-std/StdMath.sol
+c6dbb05b29be5bcbfabf06ea46b64fe9fbdb7542681795614ca3dee248214215  forge-std/StdStorage.sol
+324c2b0e100e88edbdb75f60f8a4c42f056f8d618ae5f56b1c404df64e8280a7  forge-std/StdStyle.sol
+de3fb35af79a1fd2a2de9bc4ca7866e4102f9d3fbf11f66f3fe82696412d47e2  forge-std/StdToml.sol
+c64a4d5023e6d46884734b8cb1b0f424bab26f0ccc920779b58d2f841c4506ae  forge-std/StdUtils.sol
+b1b48a4dfbd65fed186163326dc8870316679f64a195aa18050f83657d2df39c  forge-std/Test.sol
+9068805b59ac1d0ea03a8fa1f15ae49c094e0c6c852a2500e0dd112f264b2cb1  forge-std/Vm.sol
+896c5a5a5c235cb11a39876d430e1fc2c621e7950c4637ca58251b84b053f178  forge-std/console.sol
+3bbe2e07ec53d8cf9c091667fe10234fcb3e2b45eab2c711002188806f46e779  forge-std/console2.sol
+6620d9c5ea2e2291440e1dcce5072f948b7ec4d65075876a0d0ac9267d3342e3  forge-std/interfaces/IMulticall3.sol
+ed11aa2efc83fa8e575215a11dd7a9be385cf49dacbc379630168d7334899e46  forge-std/safeconsole.sol
+8ac2f2dc41ab8012e93adb3791326ffa1e4059a20c306a777109dd81816b9125  solmate/src/auth/Owned.sol
+0f1bf94844851b561ae53d57263366d18f4c4431eb47096871e8715837c6ec9d  v4-core/src/ERC6909.sol
+6fa9989899398646fd7c33f837254a69e7c75b77af120970ede397c3d0fbdc37  v4-core/src/ERC6909Claims.sol
+ac157c05d62562eed212cdf290046a85d192e7b1f8aba69c3ce358b0ebac4279  v4-core/src/Extsload.sol
+386b5618307a20144a44308b81188c7755a6c279db6c5824cf63a910864324d4  v4-core/src/Exttload.sol
+525bf4df92c4ac0fd582e1b6ac18fdfb5d147d410f38f19231e4c9a469187415  v4-core/src/NoDelegateCall.sol
+6b0327ec5427acf894865003425eed18fc09a70389f785d4c1c05541133f1012  v4-core/src/PoolManager.sol
+bdabfbdfa0d8692ee187ffab948c295c2c6ebcc2dcf86e552fba3491309843c6  v4-core/src/ProtocolFees.sol
+9421ef4ba198d94058cd9a4c9fd2d663c61fc682f7dafa449a873456853f0025  v4-core/src/interfaces/IExtsload.sol
+c21643d2c7f48d2d2407438a64a3ff0f376324cf6a0c62608977713652308c9e  v4-core/src/interfaces/IExttload.sol
+aca1db9898026d9a4b8740752fb0dbfc6a55e4bede6a949c6af4e07d626f6900  v4-core/src/interfaces/IHooks.sol
+173a3f93aeb39373271ebe2bfb961d824922378a39b7a5e983acbb1c122d296e  v4-core/src/interfaces/IPoolManager.sol
+807d68adea106ec2aa51a8009155de09ebfe09e1ee7053d5a5ae448d7e840654  v4-core/src/interfaces/IProtocolFees.sol
+2e4a514730654da2e08a82eff5b3eabae12dc1c6198951396e1d466d4c0e223e  v4-core/src/interfaces/callback/IUnlockCallback.sol
+5e966a2d22b3b234a56af4b17e36bf7be90f9b29b1ddb6a15bfefc0b6dab4282  v4-core/src/interfaces/external/IERC20Minimal.sol
+1cd65496c829036bc6aee67bc71363ab5fb6989c65e793087d0e1e2379f7d7d8  v4-core/src/interfaces/external/IERC6909Claims.sol
+e8a45eb3d57f9427fc47bbb2543c1a6a5f394113b378123ac7ca9f113a7502b4  v4-core/src/libraries/BitMath.sol
+dfbb3d232c2d52bb09c8dcbb38b4a8fd16c616b8e6bf49e6f4ee948760530f7b  v4-core/src/libraries/CurrencyDelta.sol
+b38f1d3807d90bbccb865c0d96caf1ef92d6df9b69adbbe43b1d12e1241523c9  v4-core/src/libraries/CurrencyReserves.sol
+9d3dbe6b742cb1ac30f57df89d879ade9649389de1165fc637114bd062d39fca  v4-core/src/libraries/CustomRevert.sol
+1ca2f55160697b73bd66fd27c8724d79a57108121ce1e8a0ab8b79f38bb58fbb  v4-core/src/libraries/FixedPoint128.sol
+66ee26d4fb3ac639124bdfa27d3256d196970997fa127c09e9bf7154e30d4590  v4-core/src/libraries/FixedPoint96.sol
+a9607255a6fd604d9c92f6b7416811c38b9d86e5dfdb0c345a494ebd35f7a4a3  v4-core/src/libraries/FullMath.sol
+f6012d7f627259f8f32816ee8e10b1d6244067c602a178072732bcaa32086b17  v4-core/src/libraries/Hooks.sol
+e96c3fa7deac991dc09b6c5e560a340d01d6c68ccba483d4b29f8a66e5aa44e0  v4-core/src/libraries/LPFeeLibrary.sol
+67a39e58732340af4870342ba9230691f35501d89ed8725ca1b338deaa0eb26a  v4-core/src/libraries/LiquidityMath.sol
+29cd41a53de22514164e638e7bc965ccf4d9f34b455b43a1a15e06a8cb86e7f1  v4-core/src/libraries/Lock.sol
+0ae35ca64da2527b4e1f7afa4ca10c4b65af952dc473c33b6663101e8d199f40  v4-core/src/libraries/NonzeroDeltaCount.sol
+6a6f3d1cec0143fd70ea68c34e6dce3bde72f368b213f1a225ada23dbfd99bb8  v4-core/src/libraries/ParseBytes.sol
+59c493035ad25d56f24a457e8b40d9d1e3784504b8ff13d171db1eb25c6f128e  v4-core/src/libraries/Pool.sol
+3dc4e2ad1564fa94eddf3ff06ce9ac592c9d578ea64ca194050382da454c8fcb  v4-core/src/libraries/Position.sol
+f8d96d9c8b5d12ab927b34551699bd7086750475f70254c9505e636f2cafe56a  v4-core/src/libraries/ProtocolFeeLibrary.sol
+c1a815a41607be5b4c86ca588a951f368156da8ee21bdfc18b5d51b58a0f27be  v4-core/src/libraries/SafeCast.sol
+42440c21bbab86c7eed4716b281ed5ca281cf14af8b5e06dc6dc3bc6864bcfdf  v4-core/src/libraries/SqrtPriceMath.sol
+eebdbc1b6e431072ce5521b9e1b603d43831e3b6e062743e6665e070d5cf8a1a  v4-core/src/libraries/StateLibrary.sol
+eb3971ea0ba84ff0a01f2fbe43f62f9c393121ef1724774ed3f3ab7760780e4a  v4-core/src/libraries/SwapMath.sol
+19b25dccfac8bd90f9d615fb182547eb7b5908a5cbf21a1c5920b92c47383cb6  v4-core/src/libraries/TickBitmap.sol
+272d4f6d3ff9ae33596ebcdb84a71a3c2d4542ae8fb5c88ddf1aca8043f5d06b  v4-core/src/libraries/TickMath.sol
+9835fca9df8b3f649def66835c5d7ee68de6a6cbe92bf255eb5d8b92a6a8d60e  v4-core/src/libraries/TransientStateLibrary.sol
+2de236e7ca0b9572a6b0184557565b6fd54e177224e202c727fe248785ede427  v4-core/src/libraries/UnsafeMath.sol
+320d9c13dec135c3903729e66d3a1040fe86d537a7ee53728915012ca183af32  v4-core/src/types/BalanceDelta.sol
+6aee06f1553e879f5909e8f4c0eac26ec23dd4821a7e56e4d5077db39a227e12  v4-core/src/types/BeforeSwapDelta.sol
+ba6726fd24fbc66848208dfbb2899116c10729c505e6e5552316ac2444f1dfc3  v4-core/src/types/Currency.sol
+548424ac50ad58212545da70207283fb8990731578c115c85d5acbcb0e1d3c9f  v4-core/src/types/PoolId.sol
+99e1afe285b5c614ebc9586ab5196db9d24a63fd924a449f5d99f490a6a6d6a9  v4-core/src/types/PoolKey.sol
+378b45486644dc7e49726358e83d0e2fffdaee088d18cac1a3df00d02c3635b4  v4-core/src/types/Slot0.sol
+```

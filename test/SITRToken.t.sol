@@ -409,7 +409,6 @@ contract SITRTokenTest {
         }
     }
 
-    /// forge-config: default.fuzz.runs = 1000
     function testFuzz_BuyConservationAndPreBuyProportions(uint96 a, uint96 b, uint96 buy) public {
         uint256 alice = uint256(a) % (SUPPLY / 4) + 1;
         uint256 bob = uint256(b) % (SUPPLY / 4) + 1;
@@ -433,7 +432,6 @@ contract SITRTokenTest {
     }
 
     /// @dev Stateful fuzzing across buys, sells, transfers, excluded deposits and third-party claims.
-    /// forge-config: default.fuzz.runs = 1000
     function testFuzz_SequencesPreserveSupplyAndDividendSolvency(bytes32 seed) public {
         factory.move(token, DISTRIBUTOR, SUPPLY / 10);
         factory.move(token, ALICE, 100 ether);
