@@ -1,0 +1,24 @@
+{
+  "kind": "custom_token",
+  "token": {
+    "contract": "SITRToken",
+    "name": "SI TRADER",
+    "symbol": "SITR",
+    "decimals": 18,
+    "constructorArgs": ["$launchNumber"],
+    "totalSupply": "1000000000000000000000000000"
+  },
+  "contracts": [],
+  "pool": {
+    "pairedCurrency": "0xd34a99bc0f67ae1bbd63c660e6d0b0dd03e263b7",
+    "fee": 12500,
+    "tickSpacing": 60,
+    "initialPrice": "125270724187523965593206900"
+  },
+  "economics": {
+    "poolBps": 9000,
+    "initialMarketCapWei": "2500000000000000000000",
+    "remainderTo": "0x000000000000000000000000000000000000dead"
+  },
+  "notes": "The entire fixed supply is minted once to the deploying launch factory. The factory distributes the swarm allocation and seeds the pool. The immutable factory and launch number identify the actual Merkle distributor through distributorOf(uint64); its first nonzero registration is pinned permanently. Only ERC-20 outflows from the PoolManager to another address pay the 3% dividend fee. Claims pay only the named holder. Fees with no eligible holders and division dust remain in the token contract without a withdrawal privilege. ERC-6909 balances inside the PoolManager are outside this token's scope."
+}
